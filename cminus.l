@@ -1,6 +1,6 @@
 /****************************************************/
-/* File: tiny.l                                     */
-/* Lex specification for TINY                       */
+/* File: cminus.l                                   */
+/* Lex specification for cminus                     */
 /* Compiler Construction: Principles and Practice   */
 /* Kenneth C. Louden                                */
 /****************************************************/
@@ -20,46 +20,48 @@ identifier  {letter}+
 newline     \n
 whitespace  [ \t]+
 
+%option noyywrap
 %%
 
-"if"            {return IF;}
-"void"          {return VOID;}
 "else"          {return ELSE;}
-"while"           {return WHILE;}
+"if"            {return IF;}
+"int"           {return INT;}
 "return"        {return RETURN;}
-"int"         {return INT;}
+"void"          {return VOID;}
+"while"         {return WHILE;}
 "+"             {return PLUS;}
 "-"             {return MINUS;}
 "*"             {return TIMES;}
 "/"             {return OVER;}
 "<"             {return LT;}
-"<="            {return LE;}
+"<="            {return LTEQ;}
 ">"             {return GT;}
-">="            {return GE;}
+">="            {return GTEQ;}
 "=="            {return EQ;}
-"!="            {return NE;}
+"!="            {return NEQ;}
 "="             {return ASSIGN;}
 ";"             {return SEMI;}
 ","             {return COMMA;}
 "("             {return LPAREN;}
 ")"             {return RPAREN;}
-"["             {return LBRACE;}
-"]"             {return RBRACE;}
-"{"             {return LCURLY;}
-"}"             {return RCURLY;}
+"["             {return LBRACK;}
+"]"             {return RBRACK;}
+"{"             {return LBRACE;}
+"}"             {return RBRACE;}
 {number}        {return NUM;}
 {identifier}    {return ID;}
 {newline}       {lineno++;}
 {whitespace}    {/* skip whitespace */}
 "/*"             { char c;
-					char p ='\0';
+                  char p='\0';
                   do
                   { c = input();
-				        if (c == EOF) break;
-					 if (c == '\n') lineno++;   
-		              if (p == '*' && c == '/') break;
-					 p = c;	 } while (1);
-}
+                    if (c == EOF) break;
+                    if (c == '\n') lineno++;
+                    if (p == '*' && c == '/') break;
+                    p = c;
+                  } while (1);
+                }
 .               {return ERROR;}
 
 %%
@@ -81,4 +83,3 @@ TokenType getToken(void)
   }
   return currentToken;
 }
-
